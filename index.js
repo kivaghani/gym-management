@@ -1,14 +1,18 @@
 const express = require("express");
 const app = express();
 
+const PORT = 4000;
 
-const PORT = 4000
-require('./DBConn/conn')
+app.use(express.json());
+require("./DBConn/conn");
 
-app.get('/', (req, res) => {
-    res.send({"message" : "Congratulation Tour server is running"});
-})
+const GymRoutes = require("./Routes/gym");
+app.use("/auth", GymRoutes);
+
+app.get("/", (req, res) => {
+  res.send({ message: "Congratulation Tour server is running" });
+});
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-})
+  console.log(`Server is running on port ${PORT}`);
+});
