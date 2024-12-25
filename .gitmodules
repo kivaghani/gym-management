@@ -1,0 +1,3 @@
+[submodule "Gym-Frontend"]
+	path = Gym-Frontend
+	url = git@github.com:kivaghani/gym-management.git
