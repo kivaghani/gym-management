@@ -16,5 +16,5 @@ const MembershipSchema = mongoose.Schema({
   },
 });
 
-const modelMembership = mongoose.Model("membership", MembershipSchema);
+const modelMembership = mongoose.model("membership", MembershipSchema);
 module.exports = modelMembership;
