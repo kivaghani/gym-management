@@ -37,7 +37,7 @@ const memberSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-});
+}, {timestamps : true});
 
 const memberModel = mongoose.model("member", memberSchema);
 module.exports = memberModel;

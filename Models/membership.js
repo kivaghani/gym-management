@@ -14,7 +14,7 @@ const MembershipSchema = mongoose.Schema({
     ref: "gym",
     required: true,
   },
-});
+},{timestamps : true});
 
 const modelMembership = mongoose.model("membership", MembershipSchema);
 module.exports = modelMembership;

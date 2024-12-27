@@ -11,9 +11,11 @@ require("./DBConn/conn");
 
 const GymRoutes = require("./Routes/gym");
 const MembershipRoutes = require("./Routes/membership");
+const MemberRoutes = require('./Routes/member')
 
 app.use("/auth", GymRoutes);
 app.use("/plans", MembershipRoutes);
+app.use("/members", MemberRoutes);
 
 app.get("/", (req, res) => {
   res.send({ message: "Congratulation Tour server is running" });
