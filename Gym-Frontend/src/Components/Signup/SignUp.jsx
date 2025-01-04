@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./signup.css";
 import Model from "../Model/Model";
-import ForgotPassword from "../ForgotPassword/forgotPassword";
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import axios from "axios";
 import Stack from "@mui/material/Stack";
+import { toast, ToastContainer } from 'react-toastify';
 import LinearProgress from "@mui/material/LinearProgress";
 
 const SignUp = () => {
@@ -16,7 +17,6 @@ const SignUp = () => {
       "https://images.pexels.com/photos/669584/pexels-photo-669584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   });
   const [forgotPassword, setForgotPassword] = useState(false);
-
   const [loaderImage, setLoaderImage] = useState(false);
 
   const handleClose = () => {
@@ -26,7 +26,6 @@ const SignUp = () => {
   const handleOnchange = (event, name) => {
     setInputField({ ...inputField, [name]: event.target.value });
   };
-  console.log(inputField);
 
   const uploadImage = async (event) => {
     setLoaderImage(true);
@@ -35,22 +34,31 @@ const SignUp = () => {
     const data = new FormData();
     data.append("file", files[0]);
 
-    // dcxwtk52l
-
     data.append("upload_preset", "gym-management");
     try {
       const response = await axios.post(
-        "http://api.cloudinary.com/v1_1/dcxwtk52l/image/upload",
+        "https://api.cloudinary.com/v1_1/dcxwtk52l/image/upload",
         data
       );
       console.log(response);
       const imgUrl = response.data.url;
-      setLoaderImage(false)
-      setInputField({ ...inputField, ["profilePic"]: imgUrl });
+      setInputField({ ...inputField, profilePic: imgUrl });
+      setLoaderImage(false);
     } catch (err) {
       console.log(err);
-      setLoaderImage(true)
+      setLoaderImage(false); // Fixed: Reset loader on error
+      toast.error("Failed to upload image");
+    }
+  };
 
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post('http://localhost:4000/auth/register', inputField);
+      const successMsg = response.data.message || "Registration successful";
+      toast.success(successMsg);
+    } catch (err) {
+      const errorMessage = err.response?.data?.error || "Registration failed";
+      toast.error(errorMessage);
     }
   };
 
@@ -113,7 +121,9 @@ const SignUp = () => {
         alt=""
       />
 
-      <div className="p-2 w-[80%] border-2 bg-slate-800  mx-auto rounded-lg text-white text-center text-lg hover:bg-white hover:text-black font-semibold cursor-pointer">
+      <div
+        onClick={() => handleRegister()}
+        className="p-2 w-[80%] border-2 bg-slate-800  mx-auto rounded-lg text-white text-center text-lg hover:bg-white hover:text-black font-semibold cursor-pointer">
         Register
       </div>
       <div
@@ -129,6 +139,7 @@ const SignUp = () => {
           content={<ForgotPassword />}
         />
       )}
+      <ToastContainer />
     </div>
   );
 };

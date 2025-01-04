@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
      res.cookie("cookie_token", token, cookieOptions)
       res
         .status(200)
-        .json({ message: "Logged In successfully", success: "true", gym });
+        .json({ message: "Logged In successfully", success: "true", gym, token });
     } else {
       res.status(400).json({ error: "Invalid credentials" });
     }

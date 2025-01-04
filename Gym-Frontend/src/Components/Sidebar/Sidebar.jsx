@@ -27,20 +27,22 @@ const Sidebar = () => {
   }, []);
 
   const handleLogout = async () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/");
   };
 
   return (
     <div className="w-1/4 h-[100vh] bg-black text-white p-5 flex flex-col items-center font-light">
       {/* Header */}
-      <div className="text-3xl font-bold mb-10">Power Zone</div>
+      <div className="text-3xl font-bold mb-10">
+        {localStorage.getItem('gymName')}
+      </div>
 
       {/* Profile Section */}
       <div className="flex flex-col items-center mb-10">
         <div className="w-[100px] h-[100px] rounded-full overflow-hidden mb-3">
           <img
-            src="https://images.pexels.com/photos/669584/pexels-photo-669584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src={localStorage.getItem("gymPic")}
             alt="gym-profile"
             className="w-full h-full object-cover"
           />
