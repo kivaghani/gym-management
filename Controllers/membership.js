@@ -11,7 +11,9 @@ exports.addMembership = async (req, res) => {
     } else {
       const newMembership = new Membership({ gym: req.gym._id, months, price });
       await newMembership.save();
-      res.status(200).json({ message: "Added Successfully" });
+      res
+        .status(200)
+        .json({ message: "Added Successfully", data: newMembership });
     }
   } catch (err) {
     console.log(err);
@@ -25,12 +27,10 @@ exports.getmembership = async (req, res) => {
   try {
     const loggedInId = req.gym._id;
     const membership = await Membership.find({ gym: loggedInId });
-    res
-      .status(200)
-      .json({
-        message: "Membership Fetched Successfully",
-        membership: membership,
-      });
+    res.status(200).json({
+      message: "Membership Fetched Successfully",
+      membership: membership,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({

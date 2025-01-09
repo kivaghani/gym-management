@@ -114,62 +114,66 @@ exports.searchMember = async (req, res) => {
 exports.monthlyMember = async (req, res) => {
   try {
     const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfmonth = new Date(
-      now.getFullYear(),
-      now.getMonth() + 1,
-      0,
-      23,
-      59,
-      999
-    );
-
-    const member = await Member.fing({
+    const member = await Member.find({
       gym: req.gym._id,
-      createdAt: {
+      joiningDate: {  // Changed from createdAt to joiningDate
         $gte: startOfMonth,
-        $lte: endOfmonth,
+        $lte: endOfMonth,
       },
-    }).sort({ createdAt: -1 });
+    }).sort({ joiningDate: -1 });  // Sort by joining date
 
     res.status(200).json({
+      success: true,
       message: member.length
-        ? "Fetched Members Successfully"
-        : "No such Member Registered",
+        ? "Members fetched successfully"
+        : "No members joined this month",
       members: member,
       totalMembers: member.length,
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Server error" });
+    console.error(err);
+    res.status(500).json({ 
+      success: false, 
+      error: "Failed to fetch monthly members" 
+    });
   }
 };
 
 exports.expiringWithin3Days = async (req, res) => {
   try {
     const today = new Date();
-    const nextThreeDays = new Date();
-    nextThreeDays.setDate(today.getDate() + 3);
+    today.setHours(0, 0, 0, 0);
+    
+    const threeDaysLater = new Date(today);
+    threeDaysLater.setDate(today.getDate() + 3);
+    threeDaysLater.setHours(23, 59, 59, 999);
 
     const member = await Member.find({
       gym: req.gym._id,
+      status: "Active",
       nextBillDate: {
         $gte: today,
-        $lte: nextThreeDays,
+        $lte: threeDaysLater,
       },
-    });
+    }).sort({ nextBillDate: 1 });
 
     res.status(200).json({
+      success: true,
       message: member.length
-        ? "Fetched Members Successfully"
-        : "No Such Member is Expiring within 3 days",
+        ? "Members fetched successfully"
+        : "No members expiring within 3 days",
       members: member,
       totalMembers: member.length,
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Server error" });
+    console.error(err);
+    res.status(500).json({ 
+      success: false, 
+      error: "Failed to fetch expiring members" 
+    });
   }
 };
 
