@@ -2,14 +2,13 @@
   "name": "gym",
   "version": "1.0.0",
   "main": "index.js",
-"scripts": {
-  "start": "node index.js",
-  "dev": "nodemon index.js",
-  "build": "echo 'Build completed successfully'"
-},
-
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "echo 'Build completed successfully'"
+  },
   "author": "",
-  "license": "ISC", 
+  "license": "ISC",
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
