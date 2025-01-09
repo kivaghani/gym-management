@@ -2,12 +2,12 @@
   "name": "gym",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "start": "nodemon index",
-    "test": "echo \"Error: no test specified\" && exit 1",
-"build": "npm run && echo 'Build completed successfully'"
+"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js",
+  "build": "echo 'Build completed successfully'"
+},
 
-  },
   "author": "",
   "license": "ISC", 
   "description": "",
